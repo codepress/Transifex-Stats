@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 define( 'CPTI_VERSION', 	'1.0' );
 define( 'CPTI_URL', 		plugins_url( '', __FILE__ ) );
 define( 'CPTI_TEXTDOMAIN', 	'transifex-stats' );
-define( 'CPTI_SLUG', 		'codepress-transifex' );
+define( 'CPTI_SLUG', 		'transifex-stats' );
 
 load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 

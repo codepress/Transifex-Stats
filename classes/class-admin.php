@@ -86,10 +86,10 @@ class Codepress_Transifex_Admin {
 	 */
 	public function add_settings_link( $links, $file ) {
 
-		if ( $file != plugin_basename( __FILE__ ) )
+		if ( $file != CPTI_SLUG . '/' . CPTI_SLUG . '.php' )
 			return $links;
 
-		array_unshift( $links, '<a href="' .  admin_url("admin.php") . '?page=' . CPTI_SLUG . '">' . __( 'Settings', CPTI_TEXTDOMAIN) . '</a>' );
+		array_unshift( $links, '<a href="' .  admin_url("admin.php") . '?page=' . CPTI_SLUG . '">' . __( 'Settings', CPTI_TEXTDOMAIN ) . '</a>' );
 
 		return $links;
 	}
