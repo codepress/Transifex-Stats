@@ -36,6 +36,7 @@ load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE
 
 require 'classes/class-transifex-api.php';
 require 'classes/class-admin.php';
+require 'classes/class-functions.php';
 
 /**
  * Class Codepress_Transifex
