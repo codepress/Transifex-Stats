@@ -1,0 +1,61 @@
+/* =General
+-------------------------------------------------------------- */
+
+.statbar {
+	margin-top: 10px;
+	overflow: hidden;
+}
+.statbar > div {
+
+}
+div.language_name {
+	position: relative;
+	padding-right: 8px;
+}
+.statbar div.graph_resource {
+	width: 200px;
+	position: relative;
+	z-index: 1;
+	height: 12px;
+	margin: 0;
+	padding: 0;
+	margin-right: 1px;
+	background-color: #eee;
+	-moz-box-shadow: inset 1px 1px 5px #ddd;
+	-webkit-box-shadow: inset 1px 1px 5px #ddd;
+	box-shadow: inset 1px 1px 5px #ddd;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	float: left;
+}
+
+.statbar div.translated_comp {
+	position: absolute;
+	height: 100%;
+	left: 0;
+	background: #a0cc7a;
+	background-repeat: repeat-x;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.statbar div.stats_string_resource {
+	float: left;
+	z-index: 2;
+	padding-left: .8em;
+	font-size: .923em;
+	color: #69916a;
+	height: 12px;
+	line-height: 12px;
+	width: 40px;
+}
+.statbar div.go_translate {
+	float: left;
+}
+.statbar div.go_translate a {
+	font-weight: 600;
+	font-size: .923em;
+	color: #0c58a4;
+	text-decoration: none;
+}

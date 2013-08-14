@@ -1,0 +1,13 @@
+/* =Twitter Admin
+-------------------------------------------------------------- */
+
+#icon-codepress-transifex {
+	background-image: url(../images/transifex.png);
+	background-position: 50% 50%;
+}
+
+/* =Twitter Settings Page
+----------------------------------*/
+#cptw input.code {
+	min-width: 400px;
+}
