@@ -43,6 +43,29 @@ class Codepress_Transifex_API {
 	}
 
 	/**
+	 * Is API error
+	 *
+	 * @since 1.0
+	 */
+	function is_api_error( $response ) {
+		$error = false;
+
+		if ( ! $response )
+			$error = __( 'No response', CPTI_TEXTDOMAIN );
+
+		// Error codes
+		if ( is_string( $response['body'] ) ) {
+
+			// probably an error
+			if ( 200 !== $response['response']['code'] ) {
+				$error = array( 'error' => $response['response'] );
+			}
+		}
+
+		return $error;
+	}
+
+	/**
 	 * Connect API
 	 *
 	 * @since 1.0
@@ -65,7 +88,12 @@ class Codepress_Transifex_API {
 			);
 
 			$response 	= wp_remote_get( $this->api_url . $request, $args );
-			$json 		= wp_remote_retrieve_body( $response );
+
+			// API error?
+			if( $error = $this->is_api_error( $response ) )
+				return $error;
+
+			$json = wp_remote_retrieve_body( $response );
 
 			if ( $json = wp_remote_retrieve_body( $response ) ) {
 				$result = json_decode( $json );

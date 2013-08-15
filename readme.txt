@@ -10,9 +10,7 @@ Displays your Transifex Project Statistics on your website.
 
 == Description ==
 
-Do you want more people helping you translate? This will help you to trigger your visitors into translating a lot more.
-
-This plugin displays your Transifex Project Statistics on your page. It will give you visitors a quick overview of your translatios on Transifex, and will let them start translating right away with the translate button.
+Display the status of your translatios from Transifex on your website. It will give you visitors a quick overview of your translations and will let them start translating right away with the translate button.
 
 **Related Links:**
 

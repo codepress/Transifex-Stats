@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: 	Transifex Stats
-Version: 		0.1
+Version: 		1.0
 Description: 	Display transifex translation progress
 Author: 		Codepress
 Author URI: 	http://www.codepresshq.com
@@ -33,16 +33,25 @@ define( 'CPTI_SLUG', 		'transifex-stats' );
 define( 'CPTI_URL', 		plugin_dir_url( __FILE__ ) );
 define( 'CPTI_DIR', 		plugin_dir_path( __FILE__ ) );
 
-load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
+// Dependencies
 require 'classes/class-transifex-api.php';
 require 'classes/class-admin.php';
 require 'classes/class-functions.php';
+require 'classes/class-shortcode.php';
 
+// Enables automatic plugin updates
+include_once 'classes/class-update.php';
+new CAC_Addon_Update( array(
+	'store_url'			=> 'http://www.codepresshq.com',
+	'product_id'		=> 'transifex-stats',
+	'version'			=> CPTI_VERSION,
+	'secret_key'		=> 'jhdsh23489hsdfkja9HHe',
+	'product_name'		=> 'Transifex Stats',
+	'file'				=> __FILE__
+));
 
 // @todo
 // require 'classes/class-widget.php';
-require 'classes/class-shortcode.php';
 
 /**
  * Class Codepress_Transifex
@@ -52,6 +61,8 @@ require 'classes/class-shortcode.php';
 class Codepress_Transifex {
 
 	function __construct() {
+
+		load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 		add_action( 'wp_ajax_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
 		add_action( 'wp_ajax_nopriv_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
@@ -77,6 +88,9 @@ class Codepress_Transifex {
 	 * Get project resources
 	 *
 	 * @since 1.0
+	 *
+	 * @param string $project Transifex project slug
+	 * @return array API result
 	 */
 	function get_project( $project ) {
 
@@ -88,6 +102,9 @@ class Codepress_Transifex {
 	 * Getlanguage
 	 *
 	 * @since 1.0
+	 *
+	 * @param string $language_code Transifex language code
+	 * @return array API result
 	 */
 	function get_language( $language_code ) {
 
@@ -99,9 +116,6 @@ class Codepress_Transifex {
 	 * Handle AJAX
 	 *
 	 * @since 1.0
-	 *
-	 * @param string $project Transifex project slug
-	 * @param string $resource Transifex resrouce slug (optionel )
 	 */
 	function ajax_get_project_stats() {
 
@@ -119,14 +133,41 @@ class Codepress_Transifex {
 	 * @since 1.0
 	 */
 	function sort_objects_by_completion( $b, $a ) {
-		if( (int) $a->completed == (int) $b->completed ) return 0 ;
+		if ( (int) $a->completed == (int) $b->completed ) return 0 ;
 		return ( (int) $a->completed < (int) $b->completed) ? -1 : 1;
+	}
+
+	/**
+	 * Is error
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $response API response
+	 * @return bool Error
+	 */
+	function maybe_display_error( $response ) {
+
+		$error = '';
+
+		if ( ! $response )
+			$error = __('No results', CPTI_TEXTDOMAIN );
+
+		if ( is_array( $response ) && isset( $response['error'] ) )
+			$error = $response['error']['message'] . ' (' . $response['error']['code'] . ')';
+
+		if( ! $error ) return false;
+
+		echo $error;
+		return true;
 	}
 
 	/**
 	 * Display stats
 	 *
 	 * @since 1.0
+	 *
+	 * @param string $project_slug Transifex Project slug
+	 * @param string $resource_slug Transifex Resource slug
 	 */
 	function display_stats( $project_slug = '', $resource_slug = '' ) {
 
@@ -134,6 +175,9 @@ class Codepress_Transifex {
 			return;
 
 		$project = $this->get_project( $project_slug );
+
+		// is error?
+		if ( $this->maybe_display_error( $project ) ) return;
 
 		// get first resource from project if left empty
 		if ( ! $resource_slug ) {
@@ -147,7 +191,8 @@ class Codepress_Transifex {
 		$api 	= new Codepress_Transifex_API();
 		$stats 	= $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
 
-		if ( ! $stats ) return;
+		// is error?
+		if ( $this->maybe_display_error( $stats ) ) return;
 
 		// sort stats by completion
 		$stats = (array) $stats;
