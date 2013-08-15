@@ -67,7 +67,7 @@ class Codepress_Transifex_API {
 			$response 	= wp_remote_get( $this->api_url . $request, $args );
 			$json 		= wp_remote_retrieve_body( $response );
 
-			if ( $json ) {
+			if ( $json = wp_remote_retrieve_body( $response ) ) {
 				$result = json_decode( $json );
 
 				set_transient( $cache_id, $result, 3600 ); // refresh cache each hour

@@ -28,9 +28,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 define( 'CPTI_VERSION', 	'1.0' );
-define( 'CPTI_URL', 		plugins_url( '', __FILE__ ) );
 define( 'CPTI_TEXTDOMAIN', 	'transifex-stats' );
 define( 'CPTI_SLUG', 		'transifex-stats' );
+define( 'CPTI_URL', 		plugin_dir_url( __FILE__ ) );
+define( 'CPTI_DIR', 		plugin_dir_path( __FILE__ ) );
 
 load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -41,7 +42,7 @@ require 'classes/class-functions.php';
 
 // @todo
 // require 'classes/class-widget.php';
-// require 'classes/class-shortcode.php';
+require 'classes/class-shortcode.php';
 
 /**
  * Class Codepress_Transifex
@@ -69,7 +70,8 @@ class Codepress_Transifex {
 		wp_enqueue_script( 'cp-transifex-js', CPTI_URL . '/assets/js/transifex.js', array('jquery'), CPTI_VERSION, true );
 
 		wp_localize_script( 'cp-transifex-js', 'cpti', array(
-			'ajaxurl' => admin_url('admin-ajax.php')
+			'ajaxurl' 	=> admin_url('admin-ajax.php'),
+			'no_result' => __( 'No results', CPTI_TEXTDOMAIN )
 		));
 	}
 
@@ -105,8 +107,8 @@ class Codepress_Transifex {
 	 */
 	function ajax_get_project_stats() {
 
-		$project 	= isset( $_POST['project_slug'] ) ? $_POST['project_slug'] : '';
-		$resource 	= isset( $_POST['resource_slug'] ) ? $_POST['resource_slug'] : '';
+		$project 	= isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
+		$resource 	= isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
 
 		$this->display_stats( $project, $resource );
 
@@ -144,8 +146,8 @@ class Codepress_Transifex {
 		}
 
 		// connect to API
-		$api = new Codepress_Transifex_API();
-		$stats = $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
+		$api 	= new Codepress_Transifex_API();
+		$stats 	= $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
 
 		if ( ! $stats ) return;
 
@@ -154,11 +156,14 @@ class Codepress_Transifex {
 		uasort( $stats, array( $this, 'sort_objects_by_completion' ) );
 
 		?>
-		<h2><?php echo $project->name; ?></h2>
+
+	<?php if ( $project_title = apply_filters( 'cpti_project_title', $project->name ) ) : ?>
+		<div class="transifex-title"><?php echo $project_title; ?></div>
+	<?php endif; ?>
 		<ul>
 			<?php foreach ( $stats as $language_code => $resource ) : ?>
 				<?php $language = $this->get_language( $language_code ); ?>
-			<li>
+			<li class="clearfix">
 				<div class="language_name">
 					<?php echo $language->name; ?>
 				</div>

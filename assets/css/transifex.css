@@ -8,16 +8,24 @@
 	background: transparent url('../images/loading.gif') no-repeat 50% 50%;
 	padding: 20px;
 }
-.transifex-stats h2 {
+.transifex-stats div.transifex-title {
 	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 1em;
+}
+.transifex-stats ul {
+	list-style: none !important;
 }
 .transifex-stats ul li {
-	overflow: hidden;
+	margin: 0;
+	line-height: 12px;
+	height: auto;
 }
 .transifex-stats ul li .language_name {
 	float: left;
 	width: 30%;
 	padding-right: 8px;
+	margin: 10px 0 0 0;
 }
 .transifex-stats ul li .statbar {
 	overflow: hidden;
@@ -68,6 +76,8 @@
 	position: absolute;
 	right: 0;
 	width: 100px;
+	height: 12px;
+	line-height: 12px;
 	text-align: center;
 }
 .transifex-stats ul li .statbar div.go_translate a {
@@ -75,5 +85,22 @@
 	font-size: .923em;
 	color: #0c58a4;
 	text-decoration: none;
+}
+
+/* =Clearfix
+-------------------------------------------------------------- */
+.transifex-stats .clearfix {
+  *zoom: 1;
+}
+
+.transifex-stats .clearfix:before,
+.transifex-stats .clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.transifex-stats .clearfix:after {
+  clear: both;
 }
 

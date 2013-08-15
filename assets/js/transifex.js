@@ -8,12 +8,16 @@
 
 	function codepress_transifex() {
 
+		if ( 0 === $('.transifex-stats').length ) return;
+
 		$('.transifex-stats').each( function(){
 
 			var container = $(this);
 
+			// add loading icon
 			container.addClass('loading');
 
+			// fetch with ajax
 			$.ajax({
 				url: cpti.ajaxurl,
 				data: {
@@ -24,12 +28,16 @@
 				type: 'post',
 				dataType: 'html',
 				success: function( html ){
-					if ( html ) {
-						container.html( html );
+					// error
+					if ( ! html ) {
+						html = cpti.no_result;
 					}
-					else {}
+
+					container.html( html );
 				},
 				complete: function() {
+
+					// remove loading icon
 					container.removeClass('loading');
 				}
 			});
