@@ -12,6 +12,8 @@
 
 			var container = $(this);
 
+			container.addClass('loading');
+
 			$.ajax({
 				url: cpti.ajaxurl,
 				data: {
@@ -26,6 +28,9 @@
 						container.html( html );
 					}
 					else {}
+				},
+				complete: function() {
+					container.removeClass('loading');
 				}
 			});
 		});

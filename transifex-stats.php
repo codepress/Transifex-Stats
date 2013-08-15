@@ -38,6 +38,11 @@ require 'classes/class-transifex-api.php';
 require 'classes/class-admin.php';
 require 'classes/class-functions.php';
 
+
+// @todo
+// require 'classes/class-widget.php';
+// require 'classes/class-shortcode.php';
+
 /**
  * Class Codepress_Transifex
  *
@@ -128,10 +133,10 @@ class Codepress_Transifex {
 		if ( ! $project_slug )
 			return;
 
+		$project = $this->get_project( $project_slug );
+
 		// get first resource from project if left empty
 		if ( ! $resource_slug ) {
-			$project = $this->get_project( $project_slug );
-
 			if ( empty( $project->resources ) )
 				return;
 
@@ -149,35 +154,29 @@ class Codepress_Transifex {
 		uasort( $stats, array( $this, 'sort_objects_by_completion' ) );
 
 		?>
-		<table class="codepress-transifex">
-			<tbody>
-				<?php foreach ( $stats as $language_code => $resource ) : ?>
-					<?php $language = $this->get_language( $language_code ); ?>
-				<tr>
-					<td>
-						<div class="language_name">
-							<?php echo $language->name; ?>
-						</div>
-					</td>
-					<td>
-						<div class="statbar" >
-							<div class="graph_resource">
-								<div class="translated_comp" style="width:<?php echo $resource->completed; ?>;"></div>
-							</div>
-							<div class="stats_string_resource">
-								<?php echo $resource->completed; ?>
-							</div>
-							<?php if ( $project_slug ) : ?>
-							<div class="go_translate">
-								<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/language/<?php echo $language_code; ?>/"><?php _e( 'Translate', CPTI_TEXTDOMAIN ); ?></a>
-							</div>
-							<?php endif; ?>
-						</div>
-					</td>
-				</tr>
-				<?php  endforeach; ?>
-			</tbody>
-		</table>
+		<h2><?php echo $project->name; ?></h2>
+		<ul>
+			<?php foreach ( $stats as $language_code => $resource ) : ?>
+				<?php $language = $this->get_language( $language_code ); ?>
+			<li>
+				<div class="language_name">
+					<?php echo $language->name; ?>
+				</div>
+				<div class="statbar">
+					<div class="graph_resource">
+						<div class="translated_comp" style="width:<?php echo $resource->completed; ?>;"></div>
+					</div>
+					<div class="stats_string_resource">
+						<?php echo $resource->completed; ?>
+					</div>
+					<div class="go_translate">
+						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/language/<?php echo $language_code; ?>/"><?php _e( 'Translate', CPTI_TEXTDOMAIN ); ?></a>
+					</div>
+				</div>
+			</li>
+			<?php  endforeach; ?>
+		</ul>
+
 		<?php
 	}
 }
