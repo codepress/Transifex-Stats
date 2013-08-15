@@ -218,7 +218,7 @@ class Codepress_Transifex_Admin {
 			</p>
 		</form>
 		<p>
-			<?php printf( __('This plugin is brought to you by %s', CPTI_TEXTDOMAIN ), '<a target="_blank" href="http://www.codepresshq.com">Codepresshq.com</a> - Quality WordPress Plugins' ); ?>
+			<?php printf( __('This plugin is made by %s', CPTI_TEXTDOMAIN ), '<a target="_blank" href="http://www.codepresshq.com">Codepresshq.com</a>' ); ?>
 		</p>
 	</div>
 	<?php
