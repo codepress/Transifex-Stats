@@ -184,7 +184,8 @@ class Codepress_Transifex_Admin {
 
 					<tr valign="top">
 						<th scope="row" colspan="2">
-							<p><?php _e( 'Fill in your Transifex credentials to make a connection with the API.', CPTI_TEXTDOMAIN ); ?></p>
+							<p><?php _e( 'Fill in your Transifex credentials below to make a connection with the Transifex API.', CPTI_TEXTDOMAIN ); ?></p>
+							<p><?php _e( 'Your credentials will reamin private and will only be used to connect with Transifex API.', CPTI_TEXTDOMAIN ); ?></p>
 						</th>
 					</tr>
 
