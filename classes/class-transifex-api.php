@@ -51,7 +51,7 @@ class Codepress_Transifex_API {
 		$error = false;
 
 		if ( ! $response )
-			$error = __( 'No response', CPTI_TEXTDOMAIN );
+			$error = __( 'No response', 'transifex-stats' );
 
 		// Error codes
 		if ( is_string( $response['body'] ) ) {

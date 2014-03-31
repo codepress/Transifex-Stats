@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Transifex Stats Shortcode
  *
@@ -46,7 +45,7 @@ class Codepress_Transifex_Stats_Shortcode {
      */
     function add_button_to_toolbar() {
 
-        if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') && get_user_option('rich_editing') == 'true')
+        if ( ! current_user_can('edit_posts') || ! current_user_can('edit_pages') || get_user_option('rich_editing') !== 'true' )
             return;
 
         add_filter( "mce_external_plugins", array( $this, 'register_tinymce_button' ) );
@@ -87,14 +86,13 @@ class Codepress_Transifex_Stats_Shortcode {
     function add_button_icon() {
         ?>
         <style type="text/css">
-        .wp_themeSkin .mceIcon.mce_transifex_stats { background: transparent url('<?php echo CPTI_URL; ?>assets/images/shortcode_btn_icon.png') no-repeat center center; }
+        .wp_themeSkin .mceIcon.mce_transifex_stats, /* v3.8.1 */
+        .mce-ico.mce-i-transifex_stats { /* v3.9 */
+            background: transparent url('<?php echo CPTI_URL; ?>assets/images/shortcode_btn_icon.png') no-repeat center center;
+        }
         </style>
         <?php
     }
 }
 
 new Codepress_Transifex_Stats_Shortcode();
-
-
-
-

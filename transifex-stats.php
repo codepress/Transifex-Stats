@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 define( 'CPTI_VERSION', 	'1.0' );
-define( 'CPTI_TEXTDOMAIN', 	'transifex-stats' );
 define( 'CPTI_SLUG', 		'transifex-stats' );
 define( 'CPTI_URL', 		plugin_dir_url( __FILE__ ) );
 define( 'CPTI_DIR', 		plugin_dir_path( __FILE__ ) );
@@ -39,30 +38,16 @@ require 'classes/class-admin.php';
 require 'classes/class-functions.php';
 require 'classes/class-shortcode.php';
 
-// Enables automatic plugin updates
-include_once 'classes/class-update.php';
-new CAC_Addon_Update( array(
-	'store_url'			=> 'http://www.codepresshq.com',
-	'product_id'		=> 'transifex-stats',
-	'version'			=> CPTI_VERSION,
-	'secret_key'		=> 'jhdsh23489hsdfkja9HHe',
-	'product_name'		=> 'Transifex Stats',
-	'file'				=> __FILE__
-));
-
-// @todo
-// require 'classes/class-widget.php';
-
 /**
  * Class Codepress_Transifex
  *
- * @since
+ * @since 1.0
  */
 class Codepress_Transifex {
 
 	function __construct() {
 
-		load_plugin_textdomain( CPTI_TEXTDOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'transifex-stats', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 		add_action( 'wp_ajax_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
 		add_action( 'wp_ajax_nopriv_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
@@ -80,7 +65,7 @@ class Codepress_Transifex {
 
 		wp_localize_script( 'cp-transifex-js', 'cpti', array(
 			'ajaxurl' 	=> admin_url('admin-ajax.php'),
-			'no_result' => __( 'No results', CPTI_TEXTDOMAIN )
+			'no_result' => __( 'No results', 'transifex-stats' )
 		));
 	}
 
@@ -150,7 +135,7 @@ class Codepress_Transifex {
 		$error = '';
 
 		if ( ! $response )
-			$error = __('No results', CPTI_TEXTDOMAIN );
+			$error = __('No results', 'transifex-stats' );
 
 		if ( is_array( $response ) && isset( $response['error'] ) )
 			$error = $response['error']['message'] . ' (' . $response['error']['code'] . ')';
@@ -177,7 +162,8 @@ class Codepress_Transifex {
 		$project = $this->get_project( $project_slug );
 
 		// is error?
-		if ( $this->maybe_display_error( $project ) ) return;
+		if ( $this->maybe_display_error( $project ) )
+			return;
 
 		// get first resource from project if left empty
 		if ( ! $resource_slug ) {
@@ -192,7 +178,8 @@ class Codepress_Transifex {
 		$stats 	= $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
 
 		// is error?
-		if ( $this->maybe_display_error( $stats ) ) return;
+		if ( $this->maybe_display_error( $stats ) )
+			return;
 
 		// sort stats by completion
 		$stats = (array) $stats;
@@ -218,7 +205,7 @@ class Codepress_Transifex {
 						<?php echo $resource->completed; ?>
 					</div>
 					<div class="go_translate">
-						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/language/<?php echo $language_code; ?>/"><?php _e( 'Translate', CPTI_TEXTDOMAIN ); ?></a>
+						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/language/<?php echo $language_code; ?>/"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
 					</div>
 				</div>
 			</li>
@@ -230,6 +217,3 @@ class Codepress_Transifex {
 }
 
 new Codepress_Transifex();
-
-
-

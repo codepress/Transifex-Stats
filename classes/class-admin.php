@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Codepress Transifex Admin
  *
@@ -39,7 +38,7 @@ class Codepress_Transifex_Admin {
 	public function settings_menu() {
 
 		// options page; title, menu title, capability, slug, callback
-		$page = add_options_page( __( 'Transifex Stats', CPTI_TEXTDOMAIN ), __( 'Transifex Stats', CPTI_TEXTDOMAIN ), 'manage_options', CPTI_SLUG, array( $this, 'plugin_settings_page') );
+		$page = add_options_page( __( 'Transifex Stats', 'transifex-stats' ), __( 'Transifex Stats', 'transifex-stats' ), 'manage_options', CPTI_SLUG, array( $this, 'plugin_settings_page') );
 
 		// settings page specific styles and scripts
 		add_action( "admin_print_styles-{$page}", array( $this, 'admin_styles') );
@@ -62,7 +61,7 @@ class Codepress_Transifex_Admin {
 
 			if ( ! $result ) {
 				$this->notices[] = (object) array(
-					'message' 	=> __( 'Your transifex credentials are incorrect.', CPTI_TEXTDOMAIN ),
+					'message' 	=> __( 'Your transifex credentials are incorrect.', 'transifex-stats' ),
 					'class'		=> 'error'
 				);
 			}
@@ -89,7 +88,7 @@ class Codepress_Transifex_Admin {
 		if ( $file != CPTI_SLUG . '/' . CPTI_SLUG . '.php' )
 			return $links;
 
-		array_unshift( $links, '<a href="' .  admin_url("admin.php") . '?page=' . CPTI_SLUG . '">' . __( 'Settings', CPTI_TEXTDOMAIN ) . '</a>' );
+		array_unshift( $links, '<a href="' .  admin_url("admin.php") . '?page=' . CPTI_SLUG . '">' . __( 'Settings', 'transifex-stats' ) . '</a>' );
 
 		return $links;
 	}
@@ -173,7 +172,7 @@ class Codepress_Transifex_Admin {
 	?>
 	<div id="cpti" class="wrap">
 		<?php screen_icon( CPTI_SLUG ); ?>
-		<h2><?php _e('Transifex Stats Settings', CPTI_TEXTDOMAIN); ?></h2>
+		<h2><?php _e('Transifex Stats Settings', 'transifex-stats'); ?></h2>
 
 		<form method="post" action="options.php">
 
@@ -184,14 +183,14 @@ class Codepress_Transifex_Admin {
 
 					<tr valign="top">
 						<th scope="row" colspan="2">
-							<p><?php _e( 'Fill in your Transifex credentials below to make a connection with the Transifex API.', CPTI_TEXTDOMAIN ); ?></p>
-							<p><?php _e( 'Your credentials will remain private and will only be used to connect with Transifex API.', CPTI_TEXTDOMAIN ); ?></p>
+							<p><?php _e( 'Fill in your Transifex credentials below to make a connection with the Transifex API.', 'transifex-stats' ); ?></p>
+							<p><?php _e( 'Your credentials will remain private and will only be used to connect with Transifex API.', 'transifex-stats' ); ?></p>
 						</th>
 					</tr>
 
 					<tr valign="top">
 						<th scope="row">
-							<label for="username"><?php _e( 'Username', CPTI_TEXTDOMAIN ) ?></label>
+							<label for="username"><?php _e( 'Username', 'transifex-stats' ) ?></label>
 						</th>
 						<td>
 							<label for="username">
@@ -201,7 +200,7 @@ class Codepress_Transifex_Admin {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="password"><?php _e( 'Password', CPTI_TEXTDOMAIN ) ?></label>
+							<label for="password"><?php _e( 'Password', 'transifex-stats' ) ?></label>
 						</th>
 						<td>
 							<label for="password">
@@ -218,7 +217,7 @@ class Codepress_Transifex_Admin {
 			</p>
 		</form>
 		<p>
-			<?php printf( __('This plugin is made by %s', CPTI_TEXTDOMAIN ), '<a target="_blank" href="http://www.codepresshq.com">Codepresshq.com</a>' ); ?>
+			<?php printf( __('This plugin is made by %s', 'transifex-stats' ), '<a target="_blank" href="http://www.codepresshq.com">Codepresshq.com</a>' ); ?>
 		</p>
 	</div>
 	<?php
@@ -226,4 +225,3 @@ class Codepress_Transifex_Admin {
 }
 
 new Codepress_Transifex_Admin();
-

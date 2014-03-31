@@ -1,13 +1,16 @@
-/* =Twitter Admin
--------------------------------------------------------------- */
-
+/**
+ * Icon Settings Page
+ * ----------------------------------------------------------------------------
+ */
 #icon-transifex-stats {
 	background-image: url(../images/transifex_inverse.png);
 	background-position: 2px -5px;
 }
 
-/* =Twitter Settings Page
-----------------------------------*/
+/**
+ * Input Fields
+ * ----------------------------------------------------------------------------
+ */
 #cptw input.code {
 	min-width: 400px;
 }
