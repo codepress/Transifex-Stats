@@ -29,7 +29,7 @@ Display the status of your translatios from Transifex on your website. It will g
 3. Fill in your Transifex username and password on the settings page.
 4. Go to your page and click the Transifex shortcode button in the toolbar.
 5. Fill in your project slug, like so: [transifex project="admin-columns"].
-5. You're done!
+6. You're done!
 
 == Changelog ==
 
