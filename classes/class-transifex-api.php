@@ -7,11 +7,12 @@
  */
 class Codepress_Transifex_API {
 
-	private $api_url, $auth;
+	private $api_url, $auth, $cache_length;
 
 	function __construct() {
 
 		$this->api_url = 'https://www.transifex.com/api/2/';
+		$this->cache_length = 24; // hours
 		$this->set_credentials();
 	}
 
@@ -27,8 +28,9 @@ class Codepress_Transifex_API {
 		$username = isset( $credentials['username'] ) ? $credentials['username'] : '';
 		$password = isset( $credentials['password'] ) ? $credentials['password'] : '';
 
-		if ( $username && $password )
+		if ( $username && $password ) {
 			$this->auth = $username . ':' . $password;
+		}
 	}
 
 	/**
@@ -98,7 +100,7 @@ class Codepress_Transifex_API {
 			if ( $json = wp_remote_retrieve_body( $response ) ) {
 				$result = json_decode( $json );
 
-				set_transient( $cache_id, $result, 3600 ); // refresh cache each hour
+				set_transient( $cache_id, $result, 3600 * $this->cache_length ); // refresh cache x hours
 			}
 		}
 

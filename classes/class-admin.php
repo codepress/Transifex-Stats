@@ -133,7 +133,7 @@ class Codepress_Transifex_Admin {
 			'password' 	=> '',
 		);
 
-		return apply_filters( 'CPTI_defaults', $defaults );
+		return apply_filters( 'cpti-defaults', $defaults );
 	}
 
 	/**
@@ -146,9 +146,7 @@ class Codepress_Transifex_Admin {
 		if ( ! $this->notices )
 			return;
 
-
-		foreach ( $this->notices as $notice ) {
-			?>
+		foreach ( $this->notices as $notice ) { ?>
 		    <div class="<?php echo $notice->class; ?>">
 		        <p><?php echo $notice->message; ?></p>
 		    </div>

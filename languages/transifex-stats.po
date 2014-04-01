@@ -2,42 +2,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Transifex Stats\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-15 00:34+0100\n"
-"PO-Revision-Date: 2013-08-15 00:34+0100\n"
+"POT-Creation-Date: 2014-03-31 16:08+0100\n"
+"PO-Revision-Date: 2014-03-31 16:08+0100\n"
 "Last-Translator: Codepress <info@codepress.nl>\n"
 "Language-Team: Codepress <info@codepress.nl>\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../codepress-transifex.php:169
-msgid "Translate"
+#: ../classes/class-admin.php:41
+msgid "Transifex Stats"
 msgstr ""
 
-#: ../classes/class-admin.php:42
-msgid "Transifex"
-msgstr ""
-
-#: ../classes/class-admin.php:65
+#: ../classes/class-admin.php:64
 msgid "Your transifex credentials are incorrect."
 msgstr ""
 
-#: ../classes/class-admin.php:92
+#: ../classes/class-admin.php:91
 msgid "Settings"
 msgstr ""
 
-#: ../classes/class-admin.php:176
-msgid "Transifex Settings"
+#: ../classes/class-admin.php:175
+msgid "Transifex Stats Settings"
+msgstr ""
+
+#: ../classes/class-admin.php:186
+msgid ""
+"Fill in your Transifex credentials below to make a connection with the "
+"Transifex API."
 msgstr ""
 
 #: ../classes/class-admin.php:187
-msgid "Fill in your Transifex credentials to make a connection with the API."
+msgid ""
+"Your credentials will remain private and will only be used to connect with "
+"Transifex API."
 msgstr ""
 
 #: ../classes/class-admin.php:193
@@ -50,4 +56,21 @@ msgstr ""
 
 #: ../classes/class-admin.php:216
 msgid "Save Changes"
+msgstr ""
+
+#: ../classes/class-admin.php:220
+#, php-format
+msgid "This plugin is made by %s"
+msgstr ""
+
+#: ../classes/class-transifex-api.php:54
+msgid "No response"
+msgstr ""
+
+#: ../transifex-stats.php:68 ../transifex-stats.php:138
+msgid "No results"
+msgstr ""
+
+#: ../transifex-stats.php:208
+msgid "Translate"
 msgstr ""

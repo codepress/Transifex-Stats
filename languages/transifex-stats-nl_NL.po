@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Transifex Stats\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-31 15:56+0100\n"
-"PO-Revision-Date: 2014-03-31 15:56+0100\n"
+"POT-Creation-Date: 2014-03-31 16:10+0100\n"
+"PO-Revision-Date: 2014-03-31 16:10+0100\n"
 "Last-Translator: Codepress <info@codepress.nl>\n"
 "Language-Team: Codepress <info@codepress.nl>\n"
 "Language: nl_NL\n"
@@ -18,9 +18,8 @@ msgstr ""
 "X-Poedit-SearchPath-1: ..\n"
 
 #: ../classes/class-admin.php:41
-#, fuzzy
 msgid "Transifex Stats"
-msgstr "Transifex Instellingen"
+msgstr "Transifex Stats Instellingen"
 
 #: ../classes/class-admin.php:64
 msgid "Your transifex credentials are incorrect."
@@ -31,12 +30,10 @@ msgid "Settings"
 msgstr "Instellingen"
 
 #: ../classes/class-admin.php:175
-#, fuzzy
 msgid "Transifex Stats Settings"
-msgstr "Instellingen"
+msgstr "Transifex Stats Instellingen"
 
 #: ../classes/class-admin.php:186
-#, fuzzy
 msgid ""
 "Fill in your Transifex credentials below to make a connection with the "
 "Transifex API."
@@ -47,6 +44,8 @@ msgid ""
 "Your credentials will remain private and will only be used to connect with "
 "Transifex API."
 msgstr ""
+"Uw gegevens blijven privé and worden uitsluitend gebruikt om een connectie "
+"maken met de Transifex API."
 
 #: ../classes/class-admin.php:193
 msgid "Username"
@@ -61,18 +60,17 @@ msgid "Save Changes"
 msgstr "Bewaar aanpassingen"
 
 #: ../classes/class-admin.php:220
-#, fuzzy, php-format
+#, php-format
 msgid "This plugin is made by %s"
-msgstr "van deze plugin."
+msgstr "De plugin is gemaakt door %s"
 
 #: ../classes/class-transifex-api.php:54
-#, fuzzy
 msgid "No response"
-msgstr "Verkeerde reactie van API."
+msgstr "Geen reactie"
 
 #: ../transifex-stats.php:68 ../transifex-stats.php:138
 msgid "No results"
-msgstr ""
+msgstr "Geen resultaten"
 
 #: ../transifex-stats.php:208
 msgid "Translate"
