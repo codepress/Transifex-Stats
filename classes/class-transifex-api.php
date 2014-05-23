@@ -52,13 +52,11 @@ class Codepress_Transifex_API {
 	function is_api_error( $response ) {
 		$error = false;
 
-		if ( ! $response )
+		if ( ! $response ) {
 			$error = __( 'No response', 'transifex-stats' );
+		}
 
-		// Error codes
 		if ( is_string( $response['body'] ) ) {
-
-			// probably an error
 			if ( 200 !== $response['response']['code'] ) {
 				$error = array( 'error' => $response['response'] );
 			}
@@ -89,11 +87,12 @@ class Codepress_Transifex_API {
 				'sslverify' => false
 			);
 
-			$response 	= wp_remote_get( $this->api_url . $request, $args );
+			$response = wp_remote_get( $this->api_url . $request, $args );
 
-			// API error?
-			if( $error = $this->is_api_error( $response ) )
+
+			if ( $error = $this->is_api_error( $response ) ) {
 				return $error;
+			}
 
 			$json = wp_remote_retrieve_body( $response );
 

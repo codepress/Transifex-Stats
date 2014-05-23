@@ -29,11 +29,14 @@ class Codepress_Transifex_Stats_Shortcode {
     function render_shortcode_transifex_stats( $atts, $content = null ) {
     	extract( $atts );
 
-    	if ( empty( $project ) )
+    	if ( empty( $project ) ) {
     		return false;
+        }
+
+        $args = array();
 
     	ob_start();
-    	codepress_the_transifex_stats( $project, $resource );
+    	codepress_the_transifex_stats( $project, $resource, $args );
 
     	return ob_get_clean();
     }

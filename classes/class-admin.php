@@ -37,10 +37,7 @@ class Codepress_Transifex_Admin {
 	 */
 	public function settings_menu() {
 
-		// options page; title, menu title, capability, slug, callback
 		$page = add_options_page( __( 'Transifex Stats', 'transifex-stats' ), __( 'Transifex Stats', 'transifex-stats' ), 'manage_options', CPTI_SLUG, array( $this, 'plugin_settings_page') );
-
-		// settings page specific styles and scripts
 		add_action( "admin_print_styles-{$page}", array( $this, 'admin_styles') );
 
 		// verify credentials
@@ -85,8 +82,9 @@ class Codepress_Transifex_Admin {
 	 */
 	public function add_settings_link( $links, $file ) {
 
-		if ( $file != CPTI_SLUG . '/' . CPTI_SLUG . '.php' )
+		if ( $file != CPTI_SLUG . '/' . CPTI_SLUG . '.php' ) {
 			return $links;
+		}
 
 		array_unshift( $links, '<a href="' .  admin_url("admin.php") . '?page=' . CPTI_SLUG . '">' . __( 'Settings', 'transifex-stats' ) . '</a>' );
 
@@ -143,8 +141,9 @@ class Codepress_Transifex_Admin {
 	 */
 	function admin_notices() {
 
-		if ( ! $this->notices )
+		if ( ! $this->notices ) {
 			return;
+		}
 
 		foreach ( $this->notices as $notice ) { ?>
 		    <div class="<?php echo $notice->class; ?>">

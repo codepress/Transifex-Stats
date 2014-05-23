@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: 	Transifex Stats
-Version: 		1.0
+Version: 		1.0.1
 Description: 	Display transifex translation progress
 Author: 		Codepress
 Author URI: 	http://www.codepresshq.com
@@ -26,6 +26,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+/*
+
+Changelog
+
+= 1.0.1 =
+Added filter cpti_transifex_stats to control stats output
+
+= 1.0 =
+Initial release
+
+ */
 
 define( 'CPTI_VERSION', 	'1.0' );
 define( 'CPTI_SLUG', 		'transifex-stats' );
@@ -104,10 +116,10 @@ class Codepress_Transifex {
 	 */
 	function ajax_get_project_stats() {
 
-		$project 	= isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
-		$resource 	= isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
+		$project 	  = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
+		$resource 	  = isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
 
-		$this->display_stats( $project, $resource );
+		$this->display_stats( $project, $resource, $minimum_perc );
 
 		exit;
 	}
@@ -134,13 +146,17 @@ class Codepress_Transifex {
 
 		$error = '';
 
-		if ( ! $response )
+		if ( ! $response ) {
 			$error = __('No results', 'transifex-stats' );
+		}
 
-		if ( is_array( $response ) && isset( $response['error'] ) )
+		if ( is_array( $response ) && isset( $response['error'] ) ) {
 			$error = $response['error']['message'] . ' (' . $response['error']['code'] . ')';
+		}
 
-		if( ! $error ) return false;
+		if ( ! $error ) {
+			return false;
+		}
 
 		echo $error;
 		return true;
@@ -156,34 +172,37 @@ class Codepress_Transifex {
 	 */
 	function display_stats( $project_slug = '', $resource_slug = '' ) {
 
-		if ( ! $project_slug )
+		if ( ! $project_slug ) {
 			return;
+		}
 
 		$project = $this->get_project( $project_slug );
 
-		// is error?
-		if ( $this->maybe_display_error( $project ) )
+		if ( $this->maybe_display_error( $project ) ) {
 			return;
+		}
 
 		// get first resource from project if left empty
 		if ( ! $resource_slug ) {
-			if ( empty( $project->resources ) )
+			if ( empty( $project->resources ) ) {
 				return;
+			}
 
 			$resource_slug = $project->resources[0]->slug;
 		}
 
-		// connect to API
 		$api 	= new Codepress_Transifex_API();
 		$stats 	= $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
 
-		// is error?
-		if ( $this->maybe_display_error( $stats ) )
+		if ( $this->maybe_display_error( $stats ) ) {
 			return;
+		}
 
 		// sort stats by completion
 		$stats = (array) $stats;
 		uasort( $stats, array( $this, 'sort_objects_by_completion' ) );
+
+		$stats = apply_filters( 'cpti_transifex_stats', $stats, $project );
 
 		?>
 
@@ -205,7 +224,7 @@ class Codepress_Transifex {
 						<?php echo $resource->completed; ?>
 					</div>
 					<div class="go_translate">
-						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/language/<?php echo $language_code; ?>/"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
+						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/translate/"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
 					</div>
 				</div>
 			</li>

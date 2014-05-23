@@ -7,12 +7,12 @@
  *
  * @param string $slug Transifex slug
  */
-function codepress_the_transifex_stats( $project, $resource = '' ) {
+function codepress_the_transifex_stats( $project, $resource = '', $args = array() ) {
 
-	// Trigger scripts, these will be place in the footer.
+	// Trigger scripts; these will be place in the footer.
 	Codepress_Transifex::scripts();
 
-	?>
-	<div class='transifex-stats' data-project-slug='<?php echo $project; ?>' data-resource-slug='<?php echo $resource; ?>'></div>
+	$data_resource = $resource ? " data-resource-slug='{$resource}'" : ''; ?>
+	<div class='transifex-stats' data-project-slug='<?php echo $project; ?>'<?php echo $data_resource; ?>/></div>
 	<?php
 }
