@@ -27,18 +27,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/*
-
-Changelog
-
-= 1.0.1 =
-Added filter cpti_transifex_stats to control stats output
-
-= 1.0 =
-Initial release
-
- */
-
 define( 'CPTI_VERSION', 	'1.0' );
 define( 'CPTI_SLUG', 		'transifex-stats' );
 define( 'CPTI_URL', 		plugin_dir_url( __FILE__ ) );

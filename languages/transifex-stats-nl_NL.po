@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Transifex Stats\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-31 16:10+0100\n"
-"PO-Revision-Date: 2014-03-31 16:10+0100\n"
+"POT-Creation-Date: 2014-05-23 10:36+0100\n"
+"PO-Revision-Date: 2014-05-23 10:36+0100\n"
 "Last-Translator: Codepress <info@codepress.nl>\n"
 "Language-Team: Codepress <info@codepress.nl>\n"
 "Language: nl_NL\n"
@@ -13,33 +13,33 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.5\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../classes/class-admin.php:41
+#: ../classes/class-admin.php:40
 msgid "Transifex Stats"
-msgstr "Transifex Stats Instellingen"
+msgstr "Transifex Stats"
 
-#: ../classes/class-admin.php:64
+#: ../classes/class-admin.php:61
 msgid "Your transifex credentials are incorrect."
 msgstr "Uw transifex inlog gegevens zijn onjuist."
 
-#: ../classes/class-admin.php:91
+#: ../classes/class-admin.php:89
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../classes/class-admin.php:175
+#: ../classes/class-admin.php:172
 msgid "Transifex Stats Settings"
 msgstr "Transifex Stats Instellingen"
 
-#: ../classes/class-admin.php:186
+#: ../classes/class-admin.php:183
 msgid ""
 "Fill in your Transifex credentials below to make a connection with the "
 "Transifex API."
 msgstr "Vul uw Transifex inloggegevens in om te verbinden met de API."
 
-#: ../classes/class-admin.php:187
+#: ../classes/class-admin.php:184
 msgid ""
 "Your credentials will remain private and will only be used to connect with "
 "Transifex API."
@@ -47,24 +47,24 @@ msgstr ""
 "Uw gegevens blijven privé and worden uitsluitend gebruikt om een connectie "
 "maken met de Transifex API."
 
-#: ../classes/class-admin.php:193
+#: ../classes/class-admin.php:190
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: ../classes/class-admin.php:203
+#: ../classes/class-admin.php:200
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../classes/class-admin.php:216
+#: ../classes/class-admin.php:213
 msgid "Save Changes"
 msgstr "Bewaar aanpassingen"
 
-#: ../classes/class-admin.php:220
+#: ../classes/class-admin.php:217
 #, php-format
 msgid "This plugin is made by %s"
 msgstr "De plugin is gemaakt door %s"
 
-#: ../classes/class-transifex-api.php:54
+#: ../classes/class-transifex-api.php:56
 msgid "No response"
 msgstr "Geen reactie"
 
@@ -72,6 +72,6 @@ msgstr "Geen reactie"
 msgid "No results"
 msgstr "Geen resultaten"
 
-#: ../transifex-stats.php:208
+#: ../transifex-stats.php:215
 msgid "Translate"
 msgstr "Vertaal"
