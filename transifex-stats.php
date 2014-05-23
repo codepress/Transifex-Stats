@@ -70,7 +70,7 @@ class Codepress_Transifex {
 	 *
 	 * @since 1.0
 	 */
-	function scripts() {
+	static function scripts() {
 
 		wp_enqueue_style( 'cp-transifex-css', CPTI_URL . '/assets/css/transifex.css', '', CPTI_VERSION );
 		wp_enqueue_script( 'cp-transifex-js', CPTI_URL . '/assets/js/transifex.js', array('jquery'), CPTI_VERSION, true );
@@ -119,7 +119,7 @@ class Codepress_Transifex {
 		$project 	  = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
 		$resource 	  = isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
 
-		$this->display_stats( $project, $resource, $minimum_perc );
+		$this->display_stats( $project, $resource );
 
 		exit;
 	}
@@ -224,7 +224,7 @@ class Codepress_Transifex {
 						<?php echo $resource->completed; ?>
 					</div>
 					<div class="go_translate">
-						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/translate/"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
+						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/translate/#<?php echo $language_code; ?>"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
 					</div>
 				</div>
 			</li>
