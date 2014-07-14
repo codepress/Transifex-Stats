@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: 	Transifex Stats
-Version: 		1.0.1
+Version: 		1.1
 Description: 	Display transifex translation progress
 Author: 		Codepress
 Author URI: 	http://www.codepresshq.com
