@@ -12,6 +12,8 @@ Displays your Transifex Project Statistics on your website.
 
 Display the status of your translatios from Transifex on your website. It will give you visitors a quick overview of your translations and will let them start translating right away with the translate button.
 
+You can also display a list of people that have contributed to your project.
+
 **Related Links:**
 
 * http://www.codepresshq.com/
@@ -28,10 +30,15 @@ Display the status of your translatios from Transifex on your website. It will g
 2. Activate Transifex Stats through the 'Plugins' menu in WordPress
 3. Fill in your Transifex username and password on the settings page.
 4. Go to your page and click the Transifex shortcode button in the toolbar.
-5. Fill in your project slug, like so: [transifex project="admin-columns"].
-6. You're done!
+5. Fill in your project slug, example: [transifex_stats project="transifex-stats"].
+6. Or use the contributors shortcode, example: [transifex_contributors project="transifex-stats"]
+7. You're done!
 
 == Changelog ==
+
+= 1.1 =
+Statistics will display immediately
+Added shortcode to display list of contributors of a project, example: [transifex_contributors project="transifex-stats"]
 
 = 1.0.1 =
 

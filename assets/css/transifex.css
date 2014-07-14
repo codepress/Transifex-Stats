@@ -7,10 +7,12 @@
  * Container
  * ----------------------------------------------------------------------------
  */
+.transifex-stats-contributors.loading,
 .transifex-stats.loading {
 	background: transparent url('../images/loading.gif') no-repeat 50% 50%;
 	padding: 20px;
 }
+.transifex-stats-contributors div.transifex-title,
 .transifex-stats div.transifex-title {
 	margin-bottom: 10px;
 	font-weight: bold;
@@ -92,6 +94,15 @@
 	color: #0c58a4;
 	text-decoration: none;
 }
+
+/**
+ * transifex-stats-contributors
+ * ----------------------------------------------------------------------------
+ */
+.transifex-stats-contributors a {
+	padding-right: 8px;
+}
+
 
 /**
  * Clearfix

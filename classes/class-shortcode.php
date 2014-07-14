@@ -14,29 +14,50 @@ class Codepress_Transifex_Stats_Shortcode {
 	 */
 	function __construct() {
 
-		add_shortcode( 'transifex_stats', array( $this, 'render_shortcode_transifex_stats' ) );
+        add_shortcode( 'transifex_stats', array( $this, 'render_shortcode_transifex_stats' ) );
+		add_shortcode( 'transifex_contributors', array( $this, 'render_shortcode_transifex_contributors' ) );
 
         add_action( 'init', array( $this, 'add_button_to_toolbar' ) );
         add_action( 'admin_head', array( $this, 'add_button_icon' ) );
 
 	}
 
+    /**
+     * Handle button shortcode content
+     *
+     * @since 1.0
+     */
+    function render_shortcode_transifex_stats( $atts ) {
+        extract( $atts );
+
+        if ( empty( $project ) ) {
+            return false;
+        }
+
+        if ( ! isset( $resource ) ) {
+            $resource = '';
+        }
+
+        ob_start();
+        transifex_display_translation_progress( $project, $resource );
+
+        return ob_get_clean();
+    }
+
 	/**
      * Handle button shortcode content
      *
      * @since 1.0
      */
-    function render_shortcode_transifex_stats( $atts, $content = null ) {
+    function render_shortcode_transifex_contributors( $atts ) {
     	extract( $atts );
 
     	if ( empty( $project ) ) {
     		return false;
         }
 
-        $args = array();
-
     	ob_start();
-    	codepress_the_transifex_stats( $project, $resource, $args );
+    	transifex_display_translators( $project );
 
     	return ob_get_clean();
     }

@@ -34,6 +34,7 @@ define( 'CPTI_DIR', 		plugin_dir_path( __FILE__ ) );
 
 // Dependencies
 require 'classes/class-transifex-api.php';
+require 'classes/class-transifex-stats.php';
 require 'classes/class-admin.php';
 require 'classes/class-functions.php';
 require 'classes/class-shortcode.php';
@@ -49,8 +50,11 @@ class Codepress_Transifex {
 
 		load_plugin_textdomain( 'transifex-stats', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-		add_action( 'wp_ajax_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
-		add_action( 'wp_ajax_nopriv_transifex_project_stats', array( $this, 'ajax_get_project_stats' ) );
+		add_action( 'wp_ajax_transifex_project_stats', array( $this, 'ajax_project_translations' ) );
+		add_action( 'wp_ajax_nopriv_transifex_project_stats', array( $this, 'ajax_project_translations' ) );
+
+		add_action( 'wp_ajax_transifex_contributor_stats', array( $this, 'ajax_contributor_stats' ) );
+		add_action( 'wp_ajax_nopriv_transifex_contributor_stats', array( $this, 'ajax_contributor_stats' ) );
 	}
 
 	/**
@@ -70,31 +74,19 @@ class Codepress_Transifex {
 	}
 
 	/**
-	 * Get project resources
+	 * Handle AJAX
 	 *
 	 * @since 1.0
-	 *
-	 * @param string $project Transifex project slug
-	 * @return array API result
 	 */
-	function get_project( $project ) {
+	function ajax_project_translations() {
 
-		$api = new Codepress_Transifex_API();
-		return $api->connect_api( "project/{$project}?details" );
-	}
+		$project  = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
+		$resource = isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
 
-	/**
-	 * Getlanguage
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $language_code Transifex language code
-	 * @return array API result
-	 */
-	function get_language( $language_code ) {
+		$stats = new Codepress_Transifex_Stats( $project, $resource );
+		$stats->display_translations_progress();
 
-		$api = new Codepress_Transifex_API();
-		return $api->connect_api( "language/{$language_code}" );
+		exit;
 	}
 
 	/**
@@ -102,124 +94,14 @@ class Codepress_Transifex {
 	 *
 	 * @since 1.0
 	 */
-	function ajax_get_project_stats() {
+	function ajax_contributor_stats() {
 
-		$project 	  = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
-		$resource 	  = isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
+		$project = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
 
-		$this->display_stats( $project, $resource );
+		$stats = new Codepress_Transifex_Stats( $project );
+		$stats->display_contributors();
 
 		exit;
-	}
-
-	/**
-	 * Sort object by property
-	 *
-	 * @since 1.0
-	 */
-	function sort_objects_by_completion( $b, $a ) {
-		if ( (int) $a->completed == (int) $b->completed ) return 0 ;
-		return ( (int) $a->completed < (int) $b->completed) ? -1 : 1;
-	}
-
-	/**
-	 * Is error
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $response API response
-	 * @return bool Error
-	 */
-	function maybe_display_error( $response ) {
-
-		$error = '';
-
-		if ( ! $response ) {
-			$error = __('No results', 'transifex-stats' );
-		}
-
-		if ( is_array( $response ) && isset( $response['error'] ) ) {
-			$error = $response['error']['message'] . ' (' . $response['error']['code'] . ')';
-		}
-
-		if ( ! $error ) {
-			return false;
-		}
-
-		echo $error;
-		return true;
-	}
-
-	/**
-	 * Display stats
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $project_slug Transifex Project slug
-	 * @param string $resource_slug Transifex Resource slug
-	 */
-	function display_stats( $project_slug = '', $resource_slug = '' ) {
-
-		if ( ! $project_slug ) {
-			return;
-		}
-
-		$project = $this->get_project( $project_slug );
-
-		if ( $this->maybe_display_error( $project ) ) {
-			return;
-		}
-
-		// get first resource from project if left empty
-		if ( ! $resource_slug ) {
-			if ( empty( $project->resources ) ) {
-				return;
-			}
-
-			$resource_slug = $project->resources[0]->slug;
-		}
-
-		$api 	= new Codepress_Transifex_API();
-		$stats 	= $api->connect_api( "project/{$project_slug}/resource/{$resource_slug}/stats/" );
-
-		if ( $this->maybe_display_error( $stats ) ) {
-			return;
-		}
-
-		// sort stats by completion
-		$stats = (array) $stats;
-		uasort( $stats, array( $this, 'sort_objects_by_completion' ) );
-
-		$stats = apply_filters( 'cpti_transifex_stats', $stats, $project );
-
-		?>
-
-	<?php if ( $project_title = apply_filters( 'cpti_project_title', $project->name ) ) : ?>
-		<div class="transifex-title"><?php echo $project_title; ?></div>
-	<?php endif; ?>
-		<ul>
-			<?php foreach ( $stats as $language_code => $resource ) : ?>
-				<?php $language = $this->get_language( $language_code ); ?>
-			<li class="clearfix">
-				<div class="language_name">
-					<?php echo $language->name; ?>
-				</div>
-				<div class="statbar">
-					<div class="graph_resource">
-						<div class="translated_comp" style="width:<?php echo $resource->completed; ?>;"></div>
-					</div>
-					<div class="stats_string_resource">
-						<?php echo $resource->completed; ?>
-					</div>
-					<div class="go_translate">
-						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/translate/#<?php echo $language_code; ?>"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
-					</div>
-				</div>
-			</li>
-			<?php  endforeach; ?>
-		</ul>
-
-		<?php
 	}
 }
 

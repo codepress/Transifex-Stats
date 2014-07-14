@@ -3,21 +3,20 @@
 	/** Fire when DOM is ready */
 	$(document).ready( function(){
 
-		codepress_transifex();
+		codepress_transifex_translations();
+		codepress_transifex_contributors();
 	});
 
-	function codepress_transifex() {
+	function codepress_transifex_translations() {
 
-		if ( 0 === $('.transifex-stats').length ) return;
+		if ( 0 === $('.transifex-stats').length ) {
+			return;
+		}
 
 		$('.transifex-stats').each( function(){
 
-			var container = $(this);
+			var container = $(this).addClass('loading');
 
-			// add loading icon
-			container.addClass('loading');
-
-			// fetch with ajax
 			$.ajax({
 				url: cpti.ajaxurl,
 				data: {
@@ -28,16 +27,43 @@
 				type: 'post',
 				dataType: 'html',
 				success: function( html ){
-					// error
-					if ( ! html ) {
-						html = cpti.no_result;
-					}
 
-					container.html( html );
+					if ( html && '0' !== html ) {
+						container.html( html );
+					}
 				},
 				complete: function() {
+					container.removeClass('loading');
+				}
+			});
+		});
+	}
 
-					// remove loading icon
+	function codepress_transifex_contributors() {
+
+		if ( 0 === $('.transifex-stats-contributors').length ) {
+			return;
+		}
+
+		$('.transifex-stats-contributors').each( function(){
+
+			var container = $(this).addClass('loading');
+
+			$.ajax({
+				url: cpti.ajaxurl,
+				data: {
+					action: 'transifex_contributor_stats',
+					project_slug: container.attr('data-project-slug')
+				},
+				type: 'post',
+				dataType: 'html',
+				success: function( html ){
+
+					if ( html && '0' !== html ) {
+						container.html( html );
+					}
+				},
+				complete: function() {
 					container.removeClass('loading');
 				}
 			});

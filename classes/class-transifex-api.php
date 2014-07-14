@@ -7,12 +7,12 @@
  */
 class Codepress_Transifex_API {
 
-	private $api_url, $auth, $cache_length;
+	private $api_url, $auth, $cache_time;
 
-	function __construct() {
+	function __construct( $cache_time = 3600 ) {
 
 		$this->api_url = 'https://www.transifex.com/api/2/';
-		$this->cache_length = 24; // hours
+		$this->cache_time = $cache_time;
 		$this->set_credentials();
 	}
 
@@ -72,37 +72,44 @@ class Codepress_Transifex_API {
 	 *
 	 * @param string $request API variable; e.g. projects
 	 */
-	function connect_api( $request = '' ) {
+	function connect_api( $request ) {
 
 		$cache_id = md5( $request );
+		$long_cache_id = md5( $request . 'long' );
 
 		$result = get_transient( $cache_id );
 
-		if ( ! $result ) {
+		if ( ! $result && null !== $this->cache_time ) {
 			$args = array(
 				'headers' => array(
 					'Authorization' => 'Basic ' . base64_encode( $this->auth )
 				),
-				'timeout' 	=> 3600,
+				'timeout' 	=> 120, // 2 min
 				'sslverify' => false
 			);
 
 			$response = wp_remote_get( $this->api_url . $request, $args );
 
-
 			if ( $error = $this->is_api_error( $response ) ) {
 				return $error;
 			}
 
-			$json = wp_remote_retrieve_body( $response );
-
 			if ( $json = wp_remote_retrieve_body( $response ) ) {
 				$result = json_decode( $json );
 
-				set_transient( $cache_id, $result, 3600 * $this->cache_length ); // refresh cache x hours
+				set_transient( $cache_id, $result, $this->cache_time ); // refresh cache x hours
+				set_transient( $long_cache_id, $result ); // forever
 			}
 		}
 
+		if ( ! $result ) {
+			$result = get_transient( $long_cache_id );
+		}
+
+		// shit just hit the fan...
+		if ( ! $result ) {
+			return false;
+		}
 		return $result;
 	}
 }
