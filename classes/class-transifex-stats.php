@@ -177,7 +177,7 @@ class Codepress_Transifex_Stats {
 						<?php echo $resource->completed; ?>
 					</div>
 					<div class="go_translate">
-						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $project_slug; ?>/translate/#<?php echo $language_code; ?>"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
+						<a target="_blank" href="https://www.transifex.com/projects/p/<?php echo $this->project_slug; ?>/translate/#<?php echo $language_code; ?>"><?php _e( 'Translate', 'transifex-stats' ); ?></a>
 					</div>
 				</div>
 			</li>
