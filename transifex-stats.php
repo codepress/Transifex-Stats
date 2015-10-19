@@ -80,8 +80,8 @@ class Codepress_Transifex {
 	 */
 	function ajax_project_translations() {
 
-		$project  = isset( $_POST['project_slug'] ) 	? $_POST['project_slug'] 	: '';
-		$resource = isset( $_POST['resource_slug'] ) 	? $_POST['resource_slug'] 	: '';
+		$project = isset( $_POST['project_slug'] ) ? $_POST['project_slug'] : '';
+		$resource = isset( $_POST['resource_slug'] ) ? $_POST['resource_slug'] : '';
 
 		$stats = new Codepress_Transifex_Stats( $project, $resource );
 		$stats->display_translations_progress();

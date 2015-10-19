@@ -9,19 +9,14 @@ class Codepress_Transifex_API {
 
 	private $api_url, $auth, $cache_time;
 
-	function __construct( $cache_time = 3600 ) {
+	public function __construct( $cache_time = 3600 ) {
 
 		$this->api_url = 'https://www.transifex.com/api/2/';
 		$this->cache_time = $cache_time;
 		$this->set_credentials();
 	}
 
-	/**
-	 * Set credentials
-	 *
-	 * @since 1.0
-	 */
-	function set_credentials() {
+	public function set_credentials() {
 
 		$credentials = get_option( 'cpti_options' );
 
@@ -33,36 +28,29 @@ class Codepress_Transifex_API {
 		}
 	}
 
-	/**
-	 * Verify credentials
-	 *
-	 * @since 1.0
-	 */
-	function verify_credentials() {
-
-		// @todo: contact transifex how to verify credentials
-		return true;
+	public function verify_credentials() {
+		return true; // @todo: contact transifex how to verify credentials
 	}
 
-	/**
-	 * Is API error
-	 *
-	 * @since 1.0
-	 */
-	function is_api_error( $response ) {
-		$error = false;
+	public function is_api_error( $response ) {
 
+		$error = false;
 		if ( ! $response ) {
 			$error = __( 'No response', 'transifex-stats' );
 		}
-
-		if ( is_string( $response['body'] ) ) {
+		elseif ( is_wp_error( $response ) ) {
+			$error = $response->get_error_message();
+		}
+		elseif ( isset( $response['body'] ) && is_string( $response['body'] ) ) {
 			if ( 200 !== $response['response']['code'] ) {
-				$error = array( 'error' => $response['response'] );
+				$error = $response['response']['message'];
 			}
 		}
-
 		return $error;
+	}
+
+	public function is_ssl_error( $response ) {
+		return is_wp_error( $response ) && ( false !== strstr( $response->get_error_message(), 'certificate verification is disabled' ) );
 	}
 
 	/**
@@ -72,7 +60,7 @@ class Codepress_Transifex_API {
 	 *
 	 * @param string $request API variable; e.g. projects
 	 */
-	function connect_api( $request ) {
+	public function connect_api( $request, $ssl_verify = false ) {
 
 		$cache_id = md5( $request );
 		$long_cache_id = md5( $request . 'long' );
@@ -85,10 +73,14 @@ class Codepress_Transifex_API {
 					'Authorization' => 'Basic ' . base64_encode( $this->auth )
 				),
 				'timeout' 	=> 120, // 2 min
-				'sslverify' => false
+				'sslverify' => apply_filters( 'transifex_connect_api_sslverify', $ssl_verify )
 			);
 
 			$response = wp_remote_get( $this->api_url . $request, $args );
+
+			//if ( $this->is_ssl_error( $response ) ) {
+				//$this->connect_api( $request, ! $ssl_verify );
+			//}
 
 			if ( $error = $this->is_api_error( $response ) ) {
 				return $error;

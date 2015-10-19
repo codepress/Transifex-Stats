@@ -4,7 +4,7 @@ class Codepress_Transifex_Stats {
 
 	public $project_slug, $resource_slug, $api;
 
-	function __construct( $project_slug, $resource_slug = '', $cache_time = 3600 ) {
+	public function __construct( $project_slug, $resource_slug = '', $cache_time = 3600 ) {
 
 		$this->project_slug  = $project_slug;
 		$this->resource_slug = $resource_slug;
@@ -12,65 +12,37 @@ class Codepress_Transifex_Stats {
 		$this->api = new Codepress_Transifex_API( $cache_time );
 	}
 
-	/**
-	 * Get project resources
-	 *
-	 * @since 1.0
-	 *
-	 * @return array API result
-	 */
-	function get_project() {
+	public function get_project() {
 		return $this->api->connect_api( "project/{$this->project_slug}?details" );
 	}
-
-	/**
-	 * Getlanguage
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $language_code Transifex language code
-	 * @return array API result
-	 */
-	function get_language( $language_code ) {
+	public function get_language( $language_code ) {
 		return $this->api->connect_api( "language/{$language_code}" );
 	}
+	public function get_translators( $team_language ) {
+		return $this->api->connect_api( "project/{$this->project_slug}/language/{$team_language}/" );
+	}
+	public function get_languages() {
+		return $this->api->connect_api( "project/{$this->project_slug}/languages/" );
+	}
 
-	/**
-	 * Sort object by property
-	 *
-	 * @since 1.0
-	 */
-	function sort_objects_by_completion( $b, $a ) {
+	public function sort_objects_by_completion( $b, $a ) {
 		if ( (int) $a->completed == (int) $b->completed ) return 0 ;
 		return ( (int) $a->completed < (int) $b->completed) ? -1 : 1;
 	}
 
-	/**
-	 * Is error
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $response API response
-	 * @return bool Error
-	 */
-	function maybe_display_error( $response ) {
+	public function maybe_error( $response ) {
 
-		$error = '';
-
+		$error = false;
 		if ( ! $response ) {
 			$error = __('No results', 'transifex-stats' );
 		}
-
+		if ( is_string( $response ) ) {
+			$error = $response;
+		}
 		if ( is_array( $response ) && isset( $response['error'] ) ) {
 			$error = $response['error']['message'] . ' (' . $response['error']['code'] . ')';
 		}
-
-		if ( ! $error ) {
-			return false;
-		}
-
-		echo $error;
-		return true;
+		return $error;
 	}
 
 	/**
@@ -80,30 +52,44 @@ class Codepress_Transifex_Stats {
 	 *
 	 * @return array API result
 	 */
-	function display_contributors() {
+	public function display_contributors() {
 
-		$project = $this->get_project();
-		if ( $this->maybe_display_error( $project ) ) {
+		$languages = $this->get_languages();
+echo '<pre>'; print_r( $languages ); echo '</pre>'; exit;
+		if ( $error = $this->maybe_error( $languages ) ) {
+			echo $error;
 			return;
 		}
 
-		$contributors = array();
-		if ( ! empty( $project->teams ) ) {
-			foreach( $project->teams as $team_language ) {
-				$translators = $this->api->connect_api( "project/{$this->project_slug}/language/{$team_language}/" );
-				if ( ! empty( $translators->translators ) ) {
-					$contributors = array_merge( $contributors, $translators->translators );
+		$translators = array();
+		$translators_per_language = array();
+
+		if ( $languages ) {
+			foreach ( $languages as $lang ) {
+
+				$contributors = array();
+				if ( ! empty( $lang->translators ) ) {
+					$contributors = array_merge( $contributors, $lang->translators );
 				}
-				if ( ! empty( $translators->coordinators ) ) {
-					$contributors = array_merge( $contributors, $translators->coordinators );
+				if ( ! empty( $lang->coordinators ) ) {
+					$contributors = array_merge( $contributors, $lang->coordinators );
 				}
-				if ( ! empty( $translators->reviewers ) ) {
-					$contributors = array_merge( $contributors, $translators->reviewers );
+				if ( ! empty( $lang->reviewers ) ) {
+					$contributors = array_merge( $contributors, $lang->reviewers );
 				}
+				if ( empty( $contributors ) ) {
+					continue;
+				}
+
+				$translators_per_language[ $lang->language_code ] = $contributors;
+				$translators = array_unique( array_merge( $contributors, $translators ) );
 			}
 		}
 
-		if ( ! $contributors ) {
+		echo '<pre>'; print_r( $translators ); echo '</pre>'; //exit;
+		echo '<pre>'; print_r( $translators_per_language ); echo '</pre>'; exit;
+
+		if ( ! $translators ) {
 			return;
 		}
 
@@ -129,7 +115,8 @@ class Codepress_Transifex_Stats {
 		}
 
 		$project = $this->get_project();
-		if ( $this->maybe_display_error( $project ) ) {
+		if ( $error = $this->maybe_error( $project ) ) {
+			echo $error;
 			return;
 		}
 
@@ -143,8 +130,7 @@ class Codepress_Transifex_Stats {
 		}
 
 		$languages = $this->api->connect_api( "project/{$this->project_slug}/resource/{$resource_slug}/stats/" );
-
-		if ( $this->maybe_display_error( $languages ) ) {
+		if ( $this->maybe_error( $languages ) ) {
 			return;
 		}
 
@@ -154,8 +140,7 @@ class Codepress_Transifex_Stats {
 
 		$languages = apply_filters( 'cpti_transifex_stats', $languages, $project );
 
-		if ( $languages ) :
-		?>
+		if ( $languages ) : ?>
 
 		<?php if ( $project_title = apply_filters( 'cpti_project_title', $project->name ) ) : ?>
 		<div class="transifex-title"><?php echo apply_filters( 'the_title', $project_title ); ?></div>

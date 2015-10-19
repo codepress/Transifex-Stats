@@ -4,7 +4,7 @@
 	$(document).ready( function(){
 
 		codepress_transifex_translations();
-		codepress_transifex_contributors();
+		//codepress_transifex_contributors();
 	});
 
 	function codepress_transifex_translations() {
@@ -21,8 +21,8 @@
 				url: cpti.ajaxurl,
 				data: {
 					action: 'transifex_project_stats',
-					project_slug: container.attr('data-project-slug'),
-					resource_slug: container.attr('data-resource-slug'),
+					project_slug: container.data('project-slug'),
+					resource_slug: container.data('resource-slug'),
 				},
 				type: 'post',
 				dataType: 'html',
